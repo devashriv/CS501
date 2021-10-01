@@ -9,8 +9,10 @@ def main():
     tweet_processed = tweet_lower(tweet_processed)
     tweet_processed = tweet_stop_words(tweet_processed)
     # tweet_processed = tweet_typo(tweet_processed)
+    tweet_processed = tweet_stem(tweet_processed)
 
-    print(train)
+
+    # print(train)
 
 
 main()

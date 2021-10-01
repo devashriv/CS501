@@ -4,6 +4,7 @@ import nltk
 from nltk.tokenize import word_tokenize
 from nltk.stem import wordnet
 from nltk.stem import WordNetLemmatizer
+from nltk.corpus import stopwords
 
 # Global variables - raw data
 train = pd.read_csv('train.csv')
@@ -13,15 +14,16 @@ tweet_raw = train['text'][:10]
 tweet_split = []
 
 
-def tweet_split():
+def tweet_split(tweet_raw):
     # 1. Split into words
     for item in tweet_raw:
         tweet_split.append(word_tokenize(item))
+        tweet_split += word_tokenize(item)
 
     print(tweet_split)
+    return tweet_split
 
-
-def tweet_lower():
+def tweet_lower(tweet_split):
     # 2. Text Pre-processing
     # 2.1 Make lower
     i = 0
@@ -33,13 +35,15 @@ def tweet_lower():
         i += 1
 
     print(tweet_split)
-
+    return tweet_split
 
 def tweet_stop_words():
     # 2.2 Stop words - remove punctuations and random symbols
     #
     # Add function here
     #
+    stop_words = set(stopwords.words('english'))
+
     print(tweet_split)
 
 

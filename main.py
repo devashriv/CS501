@@ -1,12 +1,14 @@
 import pandas as pd
-
+from preprocessing import *
 
 def main():
 
-    train = pd.read_csv('train.csv')
-    s = pd.read_csv('sample_submission.csv')
-    test = pd.read_csv('test.csv')
-
+	train, tweet_raw, test, s = read_data()
+	tweet_split = tweet_split(tweet_raw)
+	tweet_split_lower = tweet_lower(tweet_split)
+	tweet_processed = tweet_stop_words(tweet_split_lower)
+	# tweet_processed = tweet_typo(tweet_processed)
+	
     print(train)
 
 

@@ -45,7 +45,7 @@ def tweet_stop_words(tweet_data):
         if word in stop_words:
             tweet_data.remove(word)
 
-    print(tweet_data)
+    # print(tweet_data)
     return tweet_data
 
 def tweet_typo(tweet_data):
@@ -56,10 +56,12 @@ def tweet_typo(tweet_data):
     # print(spell('survice')) ---> service
     # print(spell('hte')) ---> the
     #
-    #
+    # this function takes too long time to run, may need improvement
     spell = Speller(lang='en')
     tweet_processed = []
     for word in tweet_data:
+        correct_word = spell(word)
+        print(correct_word)
         tweet_processed.append(spell(word))
 
     # print(tweet_processed)

@@ -7,13 +7,15 @@ from nltk.stem import WordNetLemmatizer
 from nltk.corpus import stopwords
 from autocorrect import Speller
 
+
 def read_data():
     train = pd.read_csv('train.csv')
     s = pd.read_csv('sample_submission.csv')
     test = pd.read_csv('test.csv')
-    tweet_raw = train['text']
+    tweet_raw = train['text'][:10]
 
     return train, tweet_raw, test, s
+
 
 def tweet_split(tweet_data):
     # 1. Split into words
@@ -24,6 +26,7 @@ def tweet_split(tweet_data):
     # print(tweet_split)
     return tweet_split
 
+
 def tweet_lower(tweet_data):
     # 2. Text Pre-processing
     # 2.1 Make lower
@@ -31,9 +34,9 @@ def tweet_lower(tweet_data):
     for word in tweet_data:
         tweet_split_lower.append(word.lower())
 
-
     # print(tweet_split_lower)
     return tweet_split_lower
+
 
 def tweet_stop_words(tweet_data):
     # 2.2 Stop words - remove punctuations and random symbols
@@ -47,11 +50,12 @@ def tweet_stop_words(tweet_data):
 
     symbols = [".", ",", "!", "@", "#", "$", "%"]
     for word in tweet_data:
-            if word in symbols:
-                tweet_data.remove(word)
+        if word in symbols:
+            tweet_data.remove(word)
 
     # print(tweet_data)
     return tweet_data
+
 
 def tweet_typo(tweet_data):
     # 2.3 Typo correction - replace short forms with full
@@ -74,16 +78,13 @@ def tweet_typo(tweet_data):
     return tweet_processed
 
 
-def tweet_stem(tweet_split):
+def tweet_stem(tweet_data):
     # 2.4 Stemming - remove tense prefix/suffix and return root of word
+    # only converting plurals to singulars
+    # needs more digging in or using other lemmatizer
     word_lem = WordNetLemmatizer()
-    i = 0
-    while(i < len(tweet_split)):
-        j = 0
-        while(j < len(tweet_split[i])):
-            tweet_split[i][j] = word_lem.lemmatize(tweet_split[i][j])
-            print(tweet_split[i][j])
-            j += 1
-        i += 1
-    print(tweet_split)
-    return tweet_split
+    tweet_stemmed = []
+    for word in tweet_data:
+        tweet_stemmed.append(word_lem.lemmatize(word))
+    print(tweet_stemmed)
+    return tweet_stemmed

@@ -3,7 +3,7 @@
 # **Introduction**:
 
 This repository is our team's work towards CS501 project Fall 2021.
-The aim of our project is to identify occurance of a disaster based on tweets as precisely as possible. To achieve this we are using a training data set (train.csv) from Kaggle and developing our Natural Language Processing (NLP) model. Finally we plan to validate our model by comparing it with the test dataset (test.csv) that has the correct results.
+The aim of our project is to identify occurance of a disaster based on tweets as precisely as possible. To achieve this we are using a testing data set (test.csv) from Kaggle and developing our Natural Language Processing (NLP) model. Finally we plan to validate our model by comparing it with the train dataset (train.csv) that has the correct results.
 
 
 # **Documentation:**

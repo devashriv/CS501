@@ -1,27 +1,35 @@
 # CS501
 
-Introduction:
+**Introduction**:
 
 This repository is our team's work towards CS501 project Fall 2021.
 The aim of our project is to identify occurance of a disaster based on tweets as precisely as possible. To achieve this we are using a training data set (train.csv) from Kaggle and developing our Natural Language Processing (NLP) model. Finally we plan to validate our model by comparing it with the test dataset (test.csv) that has the correct results.
 
 
-Documentation:
+**Documentation:**
 
 A. Python scripts
 
 
 0. main.py
+
 Status: WIP
+
 Description: Main script that will import functions from other scripts.
 1. Exploratory Data Analysis.py: 
+
 Status: complete
+
 Description: This script performs preliminary analysis of the raw data. It grabs all the tweets from the training data set and generates visualizations. 
 2. preprocessing.py
+
 Status: complete
+
 Description: This script contains functions that perform preprocessing on the raw data. It gets rid of stop words, symbols, converts everything to lower case. Essentially this is the first filter that cleans the raw data and converts it into a format that will be noise-free easy to manipulate in next steps.
 3.  analysis.py
+
 Status: not started
+
 Description: This script contains the main NLP model that will guide the team in disaster identification. 
 
 
@@ -38,20 +46,15 @@ C. Report Generation
 
 
 
-Usage:
+**Usage:**
 
 1. Install dependencies
 
-pandas
-numpy
-matplot
+File/Math: pandas, numpy, matplot
 
-pweave
-pandoc
-LaTeX
+Report generation: pweave, pandoc, LaTeX
 
-nltk
-autocorrect
+NLP: nltk, autocorrect
 
 To download specific NLTK resources-
 >>>import nltk

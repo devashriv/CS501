@@ -63,8 +63,8 @@ Report generation: pweave, pandoc, LaTeX
 NLP: nltk, autocorrect
 
 To download specific NLTK resources-
->>>import nltk
 
+    import nltk
     nltk.download()
 
 select the items you want from the GUI and download

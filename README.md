@@ -3,7 +3,7 @@
 # **Introduction**:
 
 This repository is our team's work towards CS501 project Fall 2021.
-The aim of our project is to identify occurance of a disaster based on tweets as precisely as possible. To achieve this we are using a testing data set (test.csv) from Kaggle and developing our Natural Language Processing (NLP) model. Finally we plan to validate our model by comparing it with the train dataset (train.csv) that has the correct results.
+The aim of our project is to identify real disasters based on tweets, which may contain hyperbolic language, as accurately as possible. To achieve this we are using a training data set (train.csv) from Kaggle and developing our Natural Language Processing (NLP) model. We plan to validate our model by comparing it with the test dataset (test.csv) that has the correct results.
 
 
 # **Documentation:**
@@ -36,7 +36,7 @@ Description: This script contains functions that perform preprocessing on the ra
 
 Status: not started
 
-Description: This script contains the main NLP model that will guide the team in disaster identification. 
+Description: This script contains the main NLP model that will guide the team in disaster identification. We have a plan for this, but we have yet to start implementation.
 
 
 B. Data
@@ -46,9 +46,9 @@ B. Data
 3. sample_submission.csv
 
 C. Report Generation
-1. FIR_designp.pdf
-2. FIR_designp.pmd
-3. FIR_designp.txt
+1. FIR_designp.pdf Output file
+2. FIR_designp.pmd File that combines the report text and the code
+3. FIR_designp.tex Intermediate file
 
 
 
@@ -68,3 +68,7 @@ To download specific NLTK resources-
 >>>nltk.download()
 
 select the items you want from the GUI and download
+
+or similarly
+
+>>>ntlk.download("autocorrect")

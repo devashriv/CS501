@@ -2,8 +2,7 @@ import pandas as pd
 import os
 import nltk
 from nltk.tokenize import word_tokenize
-from nltk.stem import wordnet
-from nltk.stem import WordNetLemmatizer
+from nltk.stem import PorterStemmer
 from nltk.corpus import stopwords
 from autocorrect import Speller
 
@@ -80,11 +79,10 @@ def tweet_typo(tweet_data):
 
 def tweet_stem(tweet_data):
     # 2.4 Stemming - remove tense prefix/suffix and return root of word
-    # only converting plurals to singulars
-    # needs more digging in or using other lemmatizer
-    word_lem = WordNetLemmatizer()
+    # use PorterStemmer to reduce a word to its word stem.
+    # Now words such as “Likes”, ”liked”, ”likely” and ”liking” will be reduced to “like” after stemming.
+    stemmer = PorterStemmer()
     tweet_stemmed = []
     for word in tweet_data:
-        tweet_stemmed.append(word_lem.lemmatize(word))
-    print(tweet_stemmed)
+        tweet_stemmed.append(stemmer.stem(word))
     return tweet_stemmed

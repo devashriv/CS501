@@ -18,10 +18,10 @@ def read_data():
 
 def tweet_split(tweet_data):
     # 1. Split into words
+    
     tweet_split = []
     for item in tweet_data:
         tweet_split += word_tokenize(item)
-
     # print(tweet_split)
     return tweet_split
 
@@ -29,6 +29,7 @@ def tweet_split(tweet_data):
 def tweet_lower(tweet_data):
     # 2. Text Pre-processing
     # 2.1 Make lower
+    
     tweet_split_lower = []
     for word in tweet_data:
         tweet_split_lower.append(word.lower())
@@ -39,9 +40,7 @@ def tweet_lower(tweet_data):
 
 def tweet_stop_words(tweet_data):
     # 2.2 Stop words - remove punctuations and random symbols
-    #
-    # Add function here
-    #
+
     stop_words = set(stopwords.words('english'))
     for word in tweet_data:
         if word in stop_words:

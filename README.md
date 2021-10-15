@@ -16,16 +16,22 @@ A. Python scripts
 Status: WIP
 
 Description: Main script that will import functions from other scripts.
+
+
 1. Exploratory Data Analysis.py: 
 
 Status: complete
 
 Description: This script performs preliminary analysis of the raw data. It grabs all the tweets from the training data set and generates visualizations. 
+
+
 2. preprocessing.py
 
 Status: complete
 
 Description: This script contains functions that perform preprocessing on the raw data. It gets rid of stop words, symbols, converts everything to lower case. Essentially this is the first filter that cleans the raw data and converts it into a format that will be noise-free easy to manipulate in next steps.
+
+
 3.  analysis.py
 
 Status: not started

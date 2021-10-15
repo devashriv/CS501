@@ -65,10 +65,10 @@ NLP: nltk, autocorrect
 To download specific NLTK resources-
 >>>import nltk
 
->>>nltk.download()
+    nltk.download()
 
 select the items you want from the GUI and download
 
 or similarly
 
->>>ntlk.download("autocorrect")
+    ntlk.download("autocorrect")

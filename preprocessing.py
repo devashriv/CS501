@@ -1,6 +1,8 @@
 import pandas as pd
 import os
 import nltk
+import string
+import re
 from nltk.tokenize import word_tokenize
 from nltk.stem import PorterStemmer
 from nltk.corpus import stopwords
@@ -27,31 +29,20 @@ def tweet_split(tweet_data):
 
 
 def tweet_lower(tweet_data):
-    # 2. Text Pre-processing
-    # 2.1 Make lower
-    
-    tweet_split_lower = []
-    for word in tweet_data:
-        tweet_split_lower.append(word.lower())
-
-    # print(tweet_split_lower)
-    return tweet_split_lower
+    #Convert all tweets to lowercase
+    return ([x.lower() for x in tweet_data])
 
 
 def tweet_stop_words(tweet_data):
-    # 2.2 Stop words - remove punctuations and random symbols
-
-    stop_words = set(stopwords.words('english'))
-    for word in tweet_data:
-        if word in stop_words:
-            tweet_data.remove(word)
-
-    symbols = [".", ",", "!", "@", "#", "$", "%"]
-    for word in tweet_data:
-        if word in symbols:
-            tweet_data.remove(word)
-
-    # print(tweet_data)
+    # 2.2 Stop words - remove stop words, URLs, punctuations and random symbols
+    stops=stopwords.words('english')
+    stops.extend(["im","theres"])
+    for i in range(0,len(tweet_data)):
+        st=tweet_data[i]
+        st = re.sub(r'https?:\/\/.*\s*', '', st,)
+        text_tokens = word_tokenize(st.translate(str.maketrans('', '', "!@#$%^&*.,/?;\"\"\'\'=><():")))
+        tokens_without_sw = [word for word in text_tokens if not word in stops]
+        tweet_data[i]=(" ").join(tokens_without_sw)
     return tweet_data
 
 
@@ -70,9 +61,6 @@ def tweet_typo(tweet_data):
         correct_word = spell(word)
     #   print(correct_word)
         tweet_processed.append(spell(word))
-
-    # print(tweet_processed)
-
     return tweet_processed
 
 
@@ -81,7 +69,10 @@ def tweet_stem(tweet_data):
     # use PorterStemmer to reduce a word to its word stem.
     # Now words such as “Likes”, ”liked”, ”likely” and ”liking” will be reduced to “like” after stemming.
     stemmer = PorterStemmer()
-    tweet_stemmed = []
-    for word in tweet_data:
-        tweet_stemmed.append(stemmer.stem(word))
-    return tweet_stemmed
+    for i in range(0,len(tweet_data)):
+        tweet_stemmed=[]
+        st=word_tokenize(tweet_data[i])
+        for word in st:
+            tweet_stemmed.append(stemmer.stem(word))
+        tweet_data[i]=(" ").join(tweet_stemmed)
+    return tweet_data

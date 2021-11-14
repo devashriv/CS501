@@ -6,8 +6,10 @@ from gensim.utils import simple_preprocess
 import gensim.corpora as corpora
 from pprint import pprint
 
-import pyLDAvis.gensim_models
 import pyLDAvis
+import pyLDAvis.gensim_models
+from multiprocessing import freeze_support
+
 
 
 def sent_to_words(sentences):
@@ -38,5 +40,6 @@ def main(num_topics):
         train['text']=tweet_processed
         train.to_csv("cleaned_tweets.csv",index=False)
 
-
-main(10)
+if __name__ == '__main__':
+    freeze_support()
+    main(10)

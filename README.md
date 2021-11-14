@@ -34,9 +34,12 @@ Description: This script contains functions that perform preprocessing on the ra
 
 3.  analysis.py
 
-Status: not started
+Status: The anaylsis code was included in main.py.
 
-Description: This script contains the main NLP model that will guide the team in disaster identification. We have a plan for this, but we have yet to start implementation.
+Description: This script contains the main NLP model that will guide the team in disaster identification.
+
+Results: the output file is a dynamic interactive html file under results folder, named ldavis_prepared_10.html. It shows the Top-30 Most Salient Terms and an Intertopic Distance Map (via multidimensional scaling).
+
 
 
 B. Data

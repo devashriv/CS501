@@ -9,7 +9,6 @@ import pyLDAvis
 import numpy as np
 #import logging
 #logging.basicConfig(filename='lda_model.log', format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
-from pprint import pprint
 from sklearn.model_selection import train_test_split
 import numpy as np
 from sklearn.metrics import accuracy_score
@@ -21,7 +20,8 @@ from sklearn import linear_model
 from sklearn import metrics
 from sklearn.model_selection import KFold
 from sklearn.metrics import fbeta_score
-
+from pprint import pprint
+from multiprocessing import freeze_support
 
 def sent_to_words(sentences):
     for sentence in sentences:
@@ -123,5 +123,6 @@ def main(num_topics):
         train['text']=tweet_processed
         train.to_csv("cleaned_tweets.csv",index=False)
 
-
-main(5)
+if __name__ == '__main__':
+    freeze_support()
+    main(10)

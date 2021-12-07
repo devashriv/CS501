@@ -1,8 +1,8 @@
 import pandas as pd
-import os
-import nltk
 import string
 import re
+import os
+import nltk
 from nltk.tokenize import word_tokenize
 from nltk.stem import PorterStemmer
 from nltk.corpus import stopwords

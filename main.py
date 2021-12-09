@@ -1,3 +1,7 @@
+import shutup
+shutup.please()
+import warnings
+warnings.filterwarnings("ignore")
 import pandas as pd
 from preprocessing import *
 import os
@@ -7,10 +11,7 @@ import gensim.corpora as corpora
 import pyLDAvis.gensim_models
 import pyLDAvis
 import numpy as np
-#import logging
-#logging.basicConfig(filename='lda_model.log', format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
 from sklearn.model_selection import train_test_split
-import numpy as np
 from sklearn.metrics import accuracy_score
 from sklearn.linear_model import LogisticRegression
 from sklearn.naive_bayes import GaussianNB, MultinomialNB
@@ -37,7 +38,8 @@ def main(num_topics):
         #Train LDA Model
         cleaned_tweets = pd.read_csv("cleaned_tweets.csv")
         #reals=cleaned_tweets[cleaned_tweets['target']==1]
-        reals=cleaned_tweets[cleaned_tweets['keyword']=="ablaze"]
+        #reals=cleaned_tweets[cleaned_tweets['keyword']=="ablaze"]
+        reals=cleaned_tweets
         data = reals['text'].values.tolist()
         data_words = list(sent_to_words(data))
         texts=data_words
@@ -111,9 +113,9 @@ def main(num_topics):
             y_pred = sgd_huber.predict(X_val_scale)
             cv_svcsgd_f1.append(f1_score(y_val, y_pred, average='binary'))
 
-        print(f'Logistic Regression Val f1: {np.mean(cv_lr_f1):.3f} +- {np.std(cv_lr_f1):.3f}')
-        print(f'Logisitic Regression SGD Val f1: {np.mean(cv_lrsgd_f1):.3f} +- {np.std(cv_lrsgd_f1):.3f}')
-        print(f'SVM Huber Val f1: {np.mean(cv_svcsgd_f1):.3f} +- {np.std(cv_svcsgd_f1):.3f}')
+        print(f'{np.mean(cv_lr_f1):.3f} +- {np.std(cv_lr_f1):.3f}')
+        print(f'{np.mean(cv_lrsgd_f1):.3f} +- {np.std(cv_lrsgd_f1):.3f}')
+        print(f'{np.mean(cv_svcsgd_f1):.3f} +- {np.std(cv_svcsgd_f1):.3f}')
 
     else:
         train, tweet_raw, test, s = read_data()
@@ -125,4 +127,4 @@ def main(num_topics):
 
 if __name__ == '__main__':
     freeze_support()
-    main(10)
+    main(50)

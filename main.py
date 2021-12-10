@@ -24,10 +24,12 @@ from sklearn.metrics import fbeta_score
 from pprint import pprint
 from multiprocessing import freeze_support
 
+#Take tweets and convert to individual words.
 def sent_to_words(sentences):
     for sentence in sentences:
         yield(gensim.utils.simple_preprocess(str(sentence), deacc=True))
 
+#Create bigrams from tweets.
 def bigrams(words, bi_min=15, tri_min=10):
     bigram = gensim.models.Phrases(words, min_count = bi_min)
     bigram_mod = gensim.models.phrases.Phraser(bigram)
@@ -62,18 +64,18 @@ def main(num_topics):
         for i in range(len(reals)):
             top_topics = (lda_model.get_document_topics(corpus[i],minimum_probability=0.0))
             topic_vec = [top_topics[i][1] for i in range(num_topics)]
-            #topic_vec.extend([reals.iloc[i].real_counts])
             topic_vec.extend([len(reals.text)])
             train_vecs.append(topic_vec)
+
         # Train Classifier
         X = np.array(train_vecs)
         y = np.array(reals.target)
 
         kf = KFold(5, shuffle=True, random_state=42)
-        cv_lr_f1, cv_lrsgd_f1, cv_svcsgd_f1,  = [], [], []
+        lr_f1, lrsgd_f1, svcsgd_f1,  = [], [], []
 
         for train_ind, val_ind in kf.split(X, y):
-            # Assign CV IDX
+            # Assign indices based on the kfolds data splitting.
             X_train, y_train = X[train_ind], y[train_ind]
             X_val, y_val = X[val_ind], y[val_ind]
 
@@ -81,17 +83,12 @@ def main(num_topics):
             scaler = StandardScaler()
             X_train_scale = scaler.fit_transform(X_train)
             X_val_scale = scaler.transform(X_val)
-
             # Logisitic Regression
             lr = LogisticRegression(
                 class_weight= 'balanced',
                 solver='newton-cg',
                 fit_intercept=True
             ).fit(X_train_scale, y_train)
-
-            y_pred = lr.predict(X_val_scale)
-            cv_lr_f1.append(f1_score(y_val, y_pred, average='binary'))
-
             # Logistic Regression SGD
             sgd = linear_model.SGDClassifier(
                 max_iter=1000,
@@ -99,10 +96,6 @@ def main(num_topics):
                 loss='log',
                 class_weight='balanced'
             ).fit(X_train_scale, y_train)
-
-            y_pred = sgd.predict(X_val_scale)
-            cv_lrsgd_f1.append(f1_score(y_val, y_pred, average='binary'))
-
             # SGD Modified Huber
             sgd_huber = linear_model.SGDClassifier(
                 max_iter=1000,
@@ -112,12 +105,13 @@ def main(num_topics):
                 class_weight='balanced'
             ).fit(X_train_scale, y_train)
 
-            y_pred = sgd_huber.predict(X_val_scale)
-            cv_svcsgd_f1.append(f1_score(y_val, y_pred, average='binary'))
+            lr_f1.append(f1_score(y_val, lr.predict(X_val_scale), average='binary'))
+            lrsgd_f1.append(f1_score(y_val, sgd.predict(X_val_scale), average='binary'))
+            svcsgd_f1.append(f1_score(y_val, sgd_huber.predict(X_val_scale), average='binary'))
 
-        print(f'{np.mean(cv_lr_f1):.3f} +- {np.std(cv_lr_f1):.3f}')
-        print(f'{np.mean(cv_lrsgd_f1):.3f} +- {np.std(cv_lrsgd_f1):.3f}')
-        print(f'{np.mean(cv_svcsgd_f1):.3f} +- {np.std(cv_svcsgd_f1):.3f}')
+        print(f'{np.mean(lr_f1):.3f}')
+        print(f'{np.mean(lrsgd_f1):.3f}')
+        print(f'{np.mean(svcsgd_f1):.3f}')
 
     else:
         train, tweet_raw, test, s = read_data()

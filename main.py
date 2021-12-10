@@ -39,6 +39,8 @@ def main(num_topics):
         cleaned_tweets = pd.read_csv("cleaned_tweets.csv")
         #reals=cleaned_tweets[cleaned_tweets['target']==1]
         #reals=cleaned_tweets[cleaned_tweets['keyword']=="ablaze"]
+        #ind=[len(str(x))>75 for x in cleaned_tweets["text"]]
+        #reals=cleaned_tweets[ind]
         reals=cleaned_tweets
         data = reals['text'].values.tolist()
         data_words = list(sent_to_words(data))
@@ -59,7 +61,7 @@ def main(num_topics):
         train_vecs = []
         for i in range(len(reals)):
             top_topics = (lda_model.get_document_topics(corpus[i],minimum_probability=0.0))
-            topic_vec = [top_topics[i][1] for i in range(5)]
+            topic_vec = [top_topics[i][1] for i in range(num_topics)]
             #topic_vec.extend([reals.iloc[i].real_counts])
             topic_vec.extend([len(reals.text)])
             train_vecs.append(topic_vec)
@@ -127,4 +129,4 @@ def main(num_topics):
 
 if __name__ == '__main__':
     freeze_support()
-    main(50)
+    main(20)

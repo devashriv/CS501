@@ -60,19 +60,18 @@ def main(num_topics):
         pyLDAvis.save_html(LDAvis_prepared, './results/ldavis_prepared_'+ str(num_topics) +'.html')
 
         # Extract LDA Model to Feature Vector
-        train_vecs = []
+        training = []
         for i in range(len(reals)):
-            top_topics = (lda_model.get_document_topics(corpus[i],minimum_probability=0.0))
-            topic_vec = [top_topics[i][1] for i in range(num_topics)]
-            topic_vec.extend([len(reals.text)])
-            train_vecs.append(topic_vec)
+            best_topics = (lda_model.get_document_topics(corpus[i],minimum_probability=0.0))
+            topic_vec = [best_topics[i][1] for i in range(num_topics)]
+            training.append(topic_vec)
 
         # Train Classifier
-        X = np.array(train_vecs)
+        X = np.array(training)
         y = np.array(reals.target)
 
-        kf = KFold(5, shuffle=True, random_state=42)
-        lr_f1, lrsgd_f1, svcsgd_f1,  = [], [], []
+        kf = KFold(5, shuffle=True)
+        lr_f1, lrs_f1, mhs_f1,  = [], [], []
 
         for train_ind, val_ind in kf.split(X, y):
             # Assign indices based on the kfolds data splitting.
@@ -81,37 +80,37 @@ def main(num_topics):
 
             # Scale Data
             scaler = StandardScaler()
-            X_train_scale = scaler.fit_transform(X_train)
-            X_val_scale = scaler.transform(X_val)
+            scaled_X_tr = scaler.fit_transform(X_train)
+            scaled_X_val = scaler.transform(X_val)
             # Logisitic Regression
             lr = LogisticRegression(
                 class_weight= 'balanced',
                 solver='newton-cg',
                 fit_intercept=True
-            ).fit(X_train_scale, y_train)
+            ).fit(scaled_X_tr, y_train)
             # Logistic Regression SGD
-            sgd = linear_model.SGDClassifier(
+            lrs = linear_model.SGDClassifier(
                 max_iter=1000,
                 tol=1e-3,
                 loss='log',
                 class_weight='balanced'
-            ).fit(X_train_scale, y_train)
+            ).fit(scaled_X_tr, y_train)
             # SGD Modified Huber
-            sgd_huber = linear_model.SGDClassifier(
+            mhs = linear_model.SGDClassifier(
                 max_iter=1000,
                 tol=1e-3,
                 alpha=20,
                 loss='modified_huber',
                 class_weight='balanced'
-            ).fit(X_train_scale, y_train)
+            ).fit(scaled_X_tr, y_train)
 
-            lr_f1.append(f1_score(y_val, lr.predict(X_val_scale), average='binary'))
-            lrsgd_f1.append(f1_score(y_val, sgd.predict(X_val_scale), average='binary'))
-            svcsgd_f1.append(f1_score(y_val, sgd_huber.predict(X_val_scale), average='binary'))
+            lr_f1.append(f1_score(y_val, lr.predict(scaled_X_val), average='binary'))
+            lrs_f1.append(f1_score(y_val, lrs.predict(scaled_X_val), average='binary'))
+            mhs_f1.append(f1_score(y_val, mhs.predict(scaled_X_val), average='binary'))
 
         print(f'{np.mean(lr_f1):.3f}')
-        print(f'{np.mean(lrsgd_f1):.3f}')
-        print(f'{np.mean(svcsgd_f1):.3f}')
+        print(f'{np.mean(lrs_f1):.3f}')
+        print(f'{np.mean(mhs_f1):.3f}')
 
     else:
         train, tweet_raw, test, s = read_data()
